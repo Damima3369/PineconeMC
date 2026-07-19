@@ -33,11 +33,11 @@ let
   sources = {
     x86_64-linux = {
       url = "https://github.com/ElyPrismLauncher/Launcher/releases/download/11.0.3/PineconeMC-Linux-x86_64.AppImage"; # UPDATE_URL_X86
-      hash = "17f9fzxspszm7rrnlz5z1ix20x4bjs7zfpr3k0g4kqalwpym4m5b"; # UPDATE_HASH_X86
+      hash = "sha256-32lY+6k8l6psuBUNPTqCis4NO6Lq384wNWXRuQPQSiA="; # UPDATE_HASH_X86
     };
     aarch64-linux = {
       url = "https://github.com/ElyPrismLauncher/Launcher/releases/download/11.0.3/PineconeMC-Linux-aarch64.AppImage"; # UPDATE_URL_ARM
-      hash = "082as01vklb56lqcxpzal8xhvklah8x3s38mp1nam5rwm7xmhsfz"; # UPDATE_HASH_ARM
+      hash = "sha256-32lY+6k8l6psuBUNPTqCis4NO6Lq384wNWXRuQPQSiA="; # UPDATE_HASH_ARM
     };
   };
 
