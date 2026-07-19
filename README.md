@@ -28,9 +28,7 @@ inputs = {
 
 И добавьте пакет в систему внутри `configuration.nix`:
 
-Nix
-
-```
+```Nix
 environment.systemPackages = [
   inputs.pineconemc.packages.${pkgs.system}.default
 ];
@@ -40,9 +38,7 @@ environment.systemPackages = [
 
 Добавьте следующий импорт прямо в список пакетов вашего `configuration.nix`:
 
-Nix
-
-```
+```Nix
 environment.systemPackages = [
   (import (builtins.fetchGit {
     url = "https://github.com/Damima3369/PineconeMC.git";
@@ -68,9 +64,7 @@ Unofficial Nix package for a PineconeMC, built from AppImage. It allows you to e
 
 Add this repository to your `flake.nix`:
 
-Nix
-
-```
+```Nix
 inputs = {
   nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   pineconemc.url = "github:Damima3369/PineconeMC";
@@ -79,9 +73,7 @@ inputs = {
 
 Then add the package to your system inside `configuration.nix`:
 
-Nix
-
-```
+```Nix
 environment.systemPackages = [
   inputs.pineconemc.packages.${pkgs.system}.default
 ];
@@ -91,9 +83,7 @@ environment.systemPackages = [
 
 Add this import directly to the packages list in your `configuration.nix`:
 
-Nix
-
-```
+```Nix
 environment.systemPackages = [
   (import (builtins.fetchGit {
     url = "https://github.com/Damima3369/PineconeMC.git";
