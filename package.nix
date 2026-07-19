@@ -40,14 +40,29 @@ let
 
   jdks = [ jdk25 jdk21 jdk17 jdk8 ];
 
-  appimage = appimageTools.wrapType2 {
+  appimageContents = appimageTools.extractType2 {
     inherit pname version;
-
     src = fetchurl {
       url = selectedSource.url;
       hash = selectedSource.hash;
     };
+  };
 
+  desktopItem = makeDesktopItem {
+    name = pname;
+    exec = pname;
+    icon = pname; # Указываем имя иконки (согласуется с именем файла ниже, без расширения)
+    comment = "PineconeMC";
+    desktopName = "PineconeMC";
+    categories = [ "Game" ];
+  };
+
+  appimage = appimageTools.wrapType2 {
+    inherit pname version;
+    src = fetchurl {
+      url = selectedSource.url;
+      hash = selectedSource.hash;
+    };
     extraPkgs = pkgs: with pkgs; [
       libGL
       vulkan-loader
@@ -74,17 +89,19 @@ symlinkJoin {
   nativeBuildInputs = [ makeWrapper ];
 
   postBuild = ''
-    # Прописываем пути к Java[cite: 1]
     wrapProgram $out/bin/${pname} \
       --prefix PRISMLAUNCHER_JAVA_PATHS : ${lib.makeSearchPath "bin/java" jdks}
 
-    # Копируем созданный ярлык в структуру пакета
     mkdir -p $out/share/applications
     cp ${desktopItem}/share/applications/* $out/share/applications/
+
+    mkdir -p $out/share/icons/hicolor/256x256/apps
+    
+    cp -L ${appimageContents}/.DirIcon $out/share/icons/hicolor/256x256/apps/${pname}.png
   '';
 
   meta = with lib; {
-    description = "This fork of Prism Launcher adds integrated support for Ely.by accounts.";
+    description = "A fork of Prism Launcher with integrated Ely.by account support.";
     platforms = [ "x86_64-linux" "aarch64-linux" ];
     mainProgram = pname;
   };
