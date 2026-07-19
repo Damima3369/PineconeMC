@@ -4,6 +4,7 @@
 , symlinkJoin
 , makeWrapper
 , stdenv
+, makeDesktopItem
 , jdk8
 , jdk17
 , jdk21
