@@ -17,7 +17,12 @@
 , libpulseaudio
 , pipewire
 , udev
-, xorg
+, libx11
+, libxcursor
+, libxext
+, libxrandr
+, libxxf86vm
+, xrandr
 , pciutils
 }:
 
@@ -28,11 +33,11 @@ let
   sources = {
     x86_64-linux = {
       url = "https://github.com/ElyPrismLauncher/Launcher/releases/download/11.0.3/PineconeMC-Linux-x86_64.AppImage"; # UPDATE_URL_X86
-      hash = "sha256-17f9fzxspszm7rrnlz5z1ix20x4bjs7zfpr3k0g4kqalwpym4m5b"; # UPDATE_HASH_X86
+      hash = "17f9fzxspszm7rrnlz5z1ix20x4bjs7zfpr3k0g4kqalwpym4m5b"; # UPDATE_HASH_X86
     };
     aarch64-linux = {
       url = "https://github.com/ElyPrismLauncher/Launcher/releases/download/11.0.3/PineconeMC-Linux-aarch64.AppImage"; # UPDATE_URL_ARM
-      hash = "sha256-082as01vklb56lqcxpzal8xhvklah8x3s38mp1nam5rwm7xmhsfz"; # UPDATE_HASH_ARM
+      hash = "082as01vklb56lqcxpzal8xhvklah8x3s38mp1nam5rwm7xmhsfz"; # UPDATE_HASH_ARM
     };
   };
 
@@ -45,7 +50,7 @@ let
     inherit pname version;
     src = fetchurl {
       url = selectedSource.url;
-      hash = selectedSource.hash;
+      sha256 = selectedSource.hash;
     };
   };
 
@@ -62,7 +67,7 @@ let
     inherit pname version;
     src = fetchurl {
       url = selectedSource.url;
-      hash = selectedSource.hash;
+      sha256 = selectedSource.hash;
     };
     extraPkgs = pkgs: with pkgs; [
       libGL
@@ -74,12 +79,12 @@ let
       alsa-lib
       libpulseaudio
       pipewire
-      xorg.libX11
-      xorg.libXcursor
-      xorg.libXext
-      xorg.libXrandr
-      xorg.libXxf86vm
-      xorg.xrandr
+      libx11
+      libxcursor
+      libxext
+      libxrandr
+      libxxf86vm
+      xrandr
     ];
   };
 in
