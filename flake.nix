@@ -20,5 +20,8 @@
           default = self.packages.${system}.pineconemc;
         }
       );
+      overlays.default = final: prev: {
+        pineconemc = final.callPackage ./package.nix { };
+      };
     };
 }
