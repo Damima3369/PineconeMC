@@ -15,21 +15,6 @@ jobs:
       - name: Checkout local repo
         uses: actions/checkout@v7.0.0
 
-      - name: Setup Node.js 24
-        uses: actions/setup-node@v6.5.0
-        with:
-          node-version: '24'
-          cache: 'npm' # опционально: кешировать node_modules/npm
-
-      - name: Install Node dependencies (optional)
-        if: ${{ always() }}
-        run: |
-          if [ -f package.json ]; then
-            npm ci
-          else
-            echo "No package.json, skipping npm install"
-          fi
-
       - name: Install Nix
         uses: cachix/install-nix-action@v31.11.0
         with:
