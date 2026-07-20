@@ -15,30 +15,72 @@
 * Я не претендую на авторские права, торговые марки или интеллектуальную собственность авторов форка или оригинального Prism Launcher. Все права принадлежат их законным владельцам.
 * Продукт распространяется «как есть», используйте на свой страх и риск.
 
+---
+
 ### 🚀 Установка
 
-#### Вариант 1: Использование Flakes
-Добавьте репозиторий в ваш `flake.nix`:
+#### Вариант 1.1: Прямое использование через Flakes
+Добавьте репозиторий в `inputs` вашего `flake.nix`:
+
 ```nix
 inputs = {
-  nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-  pineconemc.url = "github:Damima3369/PineconeMC";
+  pineconemc = {
+    url = "github:Damima3369/PineconeMC";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
 };
-```
+````
 
-И добавьте пакет в систему внутри `configuration.nix`:
+И подключите пакет напрямую в `configuration.nix`:
 
-```Nix
+```nix
 environment.systemPackages = [
   inputs.pineconemc.packages.${pkgs.system}.default
 ];
 ```
 
-#### Вариант 2: Без Flakes (Классический)
+#### Вариант 1.2: Подключение через Overlay (Рекомендуемый)
+
+Добавьте репозиторий в `inputs` вашего `flake.nix`:
+
+```nix
+inputs = {
+  pineconemc = {
+    url = "github:Damima3369/PineconeMC";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+};
+```
+
+Подключите оверлей в `outputs` вашего `flake.nix`:
+
+```nix
+outputs = { self, nixpkgs, pineconemc, ... }@inputs: {
+  nixosConfigurations.your-hostname = nixpkgs.lib.nixosSystem {
+    system = "x86_64-linux"; # или "aarch64-linux"
+    modules = [
+      ./configuration.nix
+      {
+        nixpkgs.overlays = [ pineconemc.overlays.default ];
+      }
+    ];
+  };
+};
+```
+
+После этого пакет станет доступен в `pkgs`, и его можно добавить в `configuration.nix` максимально лаконично:
+
+```nix
+environment.systemPackages = with pkgs; [
+  pineconemc
+];
+```
+
+#### Вариант 2: Без Flakes (Классический NixOS)
 
 Добавьте следующий импорт прямо в список пакетов вашего `configuration.nix`:
 
-```Nix
+```nix
 environment.systemPackages = [
   (import (builtins.fetchGit {
     url = "https://github.com/Damima3369/PineconeMC.git";
@@ -47,47 +89,101 @@ environment.systemPackages = [
 ];
 ```
 
+### ⚡ Быстрый запуск без установки
+
+Попробовать лаунчер без добавления в систему:
+
+```bash
+nix run github:Damima3369/PineconeMC
+```
+
 ## English
 
-Unofficial Nix package for a PineconeMC, built from AppImage. It allows you to easily integrate the launcher into your NixOS configuration with out-of-the-box support for all required Minecraft graphics libraries (LWJGL) and multiple Java versions (8, 17, 21, 25).
+Unofficial Nix package for PineconeMC, built directly from the official AppImage. It allows you to easily integrate the launcher into your NixOS configuration with out-of-the-box support for all required Minecraft graphics libraries (LWJGL) and multiple Java runtime environments (8, 17, 21, 25).
 
 ### ⚠️ Disclaimer
 
 - **I am NOT the creator or developer of this software fork.**
 - This repository contains **only the packaging code (derivation)** for the NixOS operating system.
 - I do not claim any copyrights, trademarks, or intellectual property rights belonging to the authors of the fork or the original Prism Launcher. All rights belong to their respective owners.
-- This is provided "as is", use it at your own risk.
-
+- This package is provided "as is", use it at your own risk.
 ### 🚀 Installation
 
-#### Option 1: Using Flakes
+#### Option 1.1: Direct Usage via Flakes
 
-Add this repository to your `flake.nix`:
+Add this repository to `inputs` in your `flake.nix`:
 
-```Nix
+```nix
 inputs = {
-  nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-  pineconemc.url = "github:Damima3369/PineconeMC";
+  pineconemc = {
+    url = "github:Damima3369/PineconeMC";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
 };
 ```
 
-Then add the package to your system inside `configuration.nix`:
+Then add the package directly inside your `configuration.nix`:
 
-```Nix
+```nix
 environment.systemPackages = [
   inputs.pineconemc.packages.${pkgs.system}.default
 ];
 ```
 
-#### Option 2: Legacy / Without Flakes
+#### Option 1.2: Clean Setup via Overlay (Recommended)
 
-Add this import directly to the packages list in your `configuration.nix`:
+Add this repository to `inputs` in your `flake.nix`:
 
-```Nix
+```nix
+inputs = {
+  pineconemc = {
+    url = "github:Damima3369/PineconeMC";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+};
+```
+
+Pass the overlay inside `outputs` of your `flake.nix`:
+
+```mix
+outputs = { self, nixpkgs, pineconemc, ... }@inputs: {
+  nixosConfigurations.your-hostname = nixpkgs.lib.nixosSystem {
+    system = "x86_64-linux"; # or "aarch64-linux"
+    modules = [
+      ./configuration.nix
+      {
+        nixpkgs.overlays = [ pineconemc.overlays.default ];
+      }
+    ];
+  };
+};
+```
+
+Now `pineconemc` is injected into `pkgs`, allowing for a clean syntax in `configuration.nix`:
+
+```nix
+environment.systemPackages = with pkgs; [
+  pineconemc
+];
+```
+
+#### Option 2: Legacy / Non-Flakes
+
+Add this import directly to the package list in your `configuration.nix`:
+
+```nix
 environment.systemPackages = [
   (import (builtins.fetchGit {
     url = "https://github.com/Damima3369/PineconeMC.git";
     ref = "main";
   }) { inherit pkgs; })
 ];
+```
+
+### ⚡ Try Without Installing
+
+Test the launcher on the fly without adding it to your system configuration:
+
+```bash
+nix run github:Damima3369/PineconeMC
 ```
