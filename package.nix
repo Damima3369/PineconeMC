@@ -28,16 +28,16 @@
 
 let
   pname = "pineconemc"; 
-  version = "11.1.0"; # UPDATE_VERSION
+  version = "11.1.1"; # UPDATE_VERSION
 
   sources = {
     x86_64-linux = {
-      url = "https://github.com/ElyPrismLauncher/Launcher/releases/download/11.1.0/PineconeMC-Linux-x86_64.AppImage"; # UPDATE_URL_X86
-      hash = "sha256-n4Znr9N9CPMH6d4eS2AfV5HVPNIXFD1nr+RCrT6wMhY="; # UPDATE_HASH_X86
+      url = "https://github.com/ElyPrismLauncher/Launcher/releases/download/11.1.1/PineconeMC-Linux-x86_64.AppImage"; # UPDATE_URL_X86
+      hash = "sha256-bhi0iWH3YKRol1hm5Y552TtWa347aPrAP5oSTQz1wmE="; # UPDATE_HASH_X86
     };
     aarch64-linux = {
-      url = "https://github.com/ElyPrismLauncher/Launcher/releases/download/11.1.0/PineconeMC-Linux-aarch64.AppImage"; # UPDATE_URL_ARM
-      hash = "sha256-g49zU4Pngh2HOjBEYQhME/JF6b0pc6onqBtiRkldKfY="; # UPDATE_HASH_ARM
+      url = "https://github.com/ElyPrismLauncher/Launcher/releases/download/11.1.1/PineconeMC-Linux-aarch64.AppImage"; # UPDATE_URL_ARM
+      hash = "sha256-r16sqKKAfHHUQdroen7SBU9wQ7bmHZ/6P4NqBQJsBQU="; # UPDATE_HASH_ARM
     };
   };
 
